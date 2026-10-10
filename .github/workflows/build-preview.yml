@@ -39,7 +39,8 @@ jobs:
           repo="${GITHUB_REPOSITORY,,}"
           image="ghcr.io/${repo}-preview:git-${GITHUB_SHA}"
           docker build --pull --file infra/Dockerfile.preview --build-arg BUILD_SHA="$GITHUB_SHA" --tag "$image" .
-          digest="$(docker push --quiet "$image" | tail -n 1)"
+          docker push "$image"
+          digest="$(docker buildx imagetools inspect "$image" | awk '/^Digest:/{print $2; exit}')"
           [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "Unexpected image digest: $digest" >&2; exit 1; }
           echo "image=ghcr.io/${repo}-preview@${digest}" >> "$GITHUB_OUTPUT"
       - name: Record deployment candidate
