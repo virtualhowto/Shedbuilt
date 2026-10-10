@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "parts": [
+    {
+      "id": "steel_tube_1200",
+      "name": "Salvaged SHS 40x40x2",
+      "material": "steel",
+      "length_m": 1.2,
+      "mass_kg": 2.9,
+      "condition": 0.85,
+      "allow_methods": [
+        "bolts",
+        "weld",
+        "tape"
+      ]
+    },
+    {
+      "id": "timber_2x4",
+      "name": "Rough sawn pine beam",
+      "material": "wood",
+      "length_m": 1.2,
+      "mass_kg": 2.6,
+      "condition": 0.9,
+      "allow_methods": [
+        "bolts",
+        "tape"
+      ]
+    },
+    {
+      "id": "axle_front",
+      "name": "Salvaged steel axle",
+      "material": "steel",
+      "length_m": 1.1,
+      "mass_kg": 5.0,
+      "condition": 0.72,
+      "allow_methods": [
+        "bolts",
+        "weld",
+        "tape"
+      ]
+    },
+    {
+      "id": "wheel_bmx",
+      "name": "Bicycle wheel",
+      "material": "mixed",
+      "diameter_m": 0.5,
+      "mass_kg": 1.8,
+      "condition": 0.76,
+      "allow_methods": [
+        "bolts"
+      ]
+    },
+    {
+      "id": "wheelbarrow_tub",
+      "name": "Wheelbarrow tray",
+      "material": "steel",
+      "mass_kg": 12.0,
+      "condition": 0.7,
+      "allow_methods": [
+        "bolts",
+        "weld",
+        "tape"
+      ]
+    }
+  ]
+}

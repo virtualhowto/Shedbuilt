@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Shedbuilt browser-first game engineering lab">
+<title>SHEDBUILT — Engineering Lab</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="mark"><div class="logo">S<span>·</span>B</div><div><strong>SHEDBUILT</strong><small>BACKYARD ENGINEERING LEAGUE</small></div></div><div class="version">PROVING YARD <b>v0.1.0</b><span class="dot"></span> SIMULATION LAB</div></header>
+<main class="layout">
+<section class="left">
+  <div class="kicker">TRACK 01 / THE BIG HILL / AUSTRALIA</div>
+  <div class="heading"><h1>BUILD IT.<br><em>BREAK IT.</em></h1><p>A scrapyard contraption. Limited time. Real consequences.<br>See what happens when your axle meets the hill.</p></div>
+  <div class="stage"><div class="stage-heading"><span>LIVE TEST CAMERA <b class="camera-chip">SIDE PROFILE</b></span><span id="run-status">● WAITING FOR BUILD</span></div><canvas id="track" width="1200" height="590" aria-label="Animated hill simulation"></canvas><div class="stage-bottom"><span>HILL TEST FIXTURE / NON-CERTIFIED PHYSICS</span><span>GRAVITY-POWERED</span></div></div>
+  <div class="gauges"><div class="gauge"><span>VEHICLE SPEED</span><strong id="speed">0.0 <small>km/h</small></strong><i></i></div><div class="gauge"><span>DISTANCE TRAVELLED</span><strong id="distance">0.0 <small>m</small></strong><i></i></div><div class="gauge"><span>AXLE MOUNT</span><strong id="axle-state" class="ok">READY</strong><i></i></div><div class="gauge"><span>EST. PEAK LOAD</span><strong id="load">0 <small>N</small></strong><i></i></div></div>
+  <section class="log"><div class="section-title">ENGINEERING NOTEBOOK <span>LIVE TEST TELEMETRY</span></div><div id="logentries" class="logentries"><div class="entry">SYS / Attach the axle using a construction method, then release the machine.</div></div></section>
+</section>
+<aside class="panel"><div class="section-title">THE WORKBENCH <span>01 / ASSEMBLY</span></div>
+  <div class="intro"><h2>Front axle mount</h2><p>Choose a fastening method. Speed of assembly is traded against load capacity.</p></div>
+  <label class="field-title">JOINING TECHNIQUE</label>
+  <div id="methods" class="method-grid" role="radiogroup" aria-label="Joining technique"><button type="button" class="method active" data-method="tape" aria-pressed="true"><b>TAPE</b><small>Fast / Weak</small></button><button type="button" class="method" data-method="bolts" aria-pressed="false"><b>BOLTS</b><small>Moderate</small></button><button type="button" class="method" data-method="weld" aria-pressed="false"><b>WELD</b><small>Slow / Strong</small></button></div>
+  <div class="range"><div class="range-title"><label for="skill">TOOL SKILL</label><strong id="skill-value">1.00×</strong></div><input id="skill" type="range" min="0.5" max="1.5" step="0.05" value="1"></div>
+  <div class="range"><div class="range-title"><label for="alignment">AXLE MISALIGNMENT</label><strong id="alignment-value">1.0°</strong></div><input id="alignment" type="range" min="0" max="8" step="0.5" value="1"></div>
+  <div class="range"><div class="range-title"><label for="mass">VEHICLE MASS</label><strong id="mass-value">85 kg</strong></div><input id="mass" type="range" min="35" max="160" step="5" value="85"></div>
+  <div class="range"><div class="range-title"><label for="budget">BUILD BUDGET</label><strong id="budget-value">90 sec</strong></div><input id="budget" type="range" min="15" max="120" step="5" value="90"></div>
+  <div class="materials"><div class="section-title">ASSEMBLY ESTIMATE</div><div><span>Tool operation + alignment</span><b id="build-time">16.0s</b></div><div><span>Estimated quality</span><b id="quality">85%</b></div><div><span>Est. shear capacity</span><b id="capacity">255 N</b></div><div><span>Time remaining</span><b id="remaining">74s</b></div></div>
+  <div class="warn" id="warning">Strength depends on load direction, material condition and craftsmanship. Prototype uses a simplified joint model.</div>
+  <div class="actions"><button type="button" id="build" class="primary">01 — ATTACH AXLE</button><button type="button" id="release" class="primary" disabled>02 — RELEASE ON HILL →</button><button type="button" id="reset" class="secondary">RESET PROVING YARD</button></div>
+  <div class="footnote">V0.1 physics lab / 2D visualisation only. The full 3D Godot Web prototype is in the repository. Results are illustrative, not an engineering safety rating.</div>
+</aside>
+</main><script type="module" src="main.mjs"></script>
+</body></html>

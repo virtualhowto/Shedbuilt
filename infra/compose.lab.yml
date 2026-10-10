@@ -1,0 +1,10 @@
+# Local-only static proof-of-concept, not the exported Godot game.
+services:
+  engineering-lab:
+    image: nginxinc/nginx-unprivileged:1.27.5-alpine
+    ports: ["127.0.0.1:8080:8080"]
+    volumes:
+      - ../web-lab:/usr/share/nginx/html:ro
+    read_only: true
+    tmpfs: [/tmp, /var/cache/nginx]
+    security_opt: ["no-new-privileges:true"]

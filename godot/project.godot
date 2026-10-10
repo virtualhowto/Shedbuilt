@@ -1,0 +1,27 @@
+; Shedbuilt Godot 4.6 Web-first physics PoC
+config_version=5
+
+[application]
+config/name="Shedbuilt — Engineering Lab"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+
+[autoload]
+GameNetwork="*res://scripts/network/GameNetwork.gd"
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+
+[physics]
+3d/physics_engine="GodotPhysics3D"
+common/physics_ticks_per_second=60
+
+[network]
+limits/debugger/max_chars_per_second=16384

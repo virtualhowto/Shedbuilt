@@ -1,0 +1,11 @@
+# Deploy the already-tested standalone engineering lab, NOT the unfinished 3D multiplayer client.
+FROM nginxinc/nginx-unprivileged:1.27.5-alpine
+ARG BUILD_SHA=local
+# The upstream unprivileged image defaults to UID 101; switch only for build-time file generation.
+USER root
+COPY infra/nginx.conf /etc/nginx/conf.d/default.conf
+COPY web-lab/Shedbuilt-lab-standalone.html /usr/share/nginx/html/index.html
+RUN printf '{"app":"Shedbuilt","channel":"private-engineering-preview","commit":"%s"}\n' "$BUILD_SHA" > /usr/share/nginx/html/version.json
+USER 101
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://127.0.0.1:8080/healthz | grep -q '^ok$' || exit 1

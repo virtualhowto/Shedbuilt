@@ -1,0 +1,26 @@
+{
+  "units": "N,Nm,s",
+  "methods": {
+    "tape": {
+      "shear_capacity_n": 300,
+      "tension_capacity_n": 140,
+      "moment_capacity_nm": 45,
+      "base_seconds": 6,
+      "peel_factor": 0.3
+    },
+    "bolts": {
+      "shear_capacity_n": 3500,
+      "tension_capacity_n": 2800,
+      "moment_capacity_nm": 750,
+      "base_seconds": 25,
+      "peel_factor": 1
+    },
+    "weld": {
+      "shear_capacity_n": 6500,
+      "tension_capacity_n": 4600,
+      "moment_capacity_nm": 1200,
+      "base_seconds": 40,
+      "peel_factor": 1
+    }
+  }
+}

@@ -1,0 +1,56 @@
+# UNRELEASED DESIGN TEMPLATE - No production multiplayer deployment until private invites and server-side authorization are complete.
+# TEMPLATE. Export SHEDBUILT_DOMAIN, SHEDBUILT_WEB_IMAGE, SHEDBUILT_GAME_IMAGE,
+# TRAEFIK_NETWORK in shell; provision DNS, TLS resolver, labelled node & Swarm secret.
+# This is not safe for public ingress until short-lived invitations are implemented.
+version: '3.9'
+services:
+  web:
+    image: ${SHEDBUILT_WEB_IMAGE}
+    networks: [ingress]
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        order: stop-first
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.shedbuilt-web.rule=Host(`${SHEDBUILT_DOMAIN}`)
+        - traefik.http.routers.shedbuilt-web.entrypoints=websecure
+        - traefik.http.routers.shedbuilt-web.tls=true
+        - traefik.http.routers.shedbuilt-web.service=shedbuilt-web
+        - traefik.http.services.shedbuilt-web.loadbalancer.server.port=8080
+  game:
+    image: ${SHEDBUILT_GAME_IMAGE}
+    networks: [ingress]
+    secrets: [shedbuilt_lobby_key]
+    environment:
+      GAME_MAX_PLAYERS: '4'
+    read_only: true
+    tmpfs:
+      - /tmp
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.shedbuilt_game == true
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: stop-first
+        failure_action: rollback
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.shedbuilt-wss.rule=Host(`${SHEDBUILT_DOMAIN}`) && PathPrefix(`/ws`)
+        - traefik.http.routers.shedbuilt-wss.entrypoints=websecure
+        - traefik.http.routers.shedbuilt-wss.tls=true
+        - traefik.http.routers.shedbuilt-wss.service=shedbuilt-wss
+        - traefik.http.services.shedbuilt-wss.loadbalancer.server.port=9080
+networks:
+  ingress:
+    external: true
+    name: ${TRAEFIK_NETWORK}
+secrets:
+  shedbuilt_lobby_key:
+    external: true

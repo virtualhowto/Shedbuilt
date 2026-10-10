@@ -1,0 +1,11 @@
+# Godot cached imports
+.godot/
+**/.godot/
+# Build and secrets
+build/
+.env
+.env.*
+!.env.example
+*.log
+node_modules/
+.DS_Store

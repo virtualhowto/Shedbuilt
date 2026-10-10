@@ -1,0 +1,31 @@
+# Engineering lab preview only: no game service, public lobby, database or mutation endpoints.
+# REQUIRED: an already configured Traefik Authentik forward-auth middleware.
+# Do NOT remove the middleware from the router. A middleware name alone is not proof it works.
+services:
+  preview:
+    image: ${SHEDBUILT_PREVIEW_IMAGE:?Set tested image with sha256 digest}
+    networks: [traefik]
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        order: stop-first
+      labels:
+        - traefik.enable=true
+        - traefik.swarm.network=${TRAEFIK_NETWORK:?Set Traefik overlay network}
+        - traefik.http.routers.shedbuilt-preview.rule=Host(`${SHEDBUILT_DOMAIN:?Set confirmed hostname}`)
+        - traefik.http.routers.shedbuilt-preview.entrypoints=websecure
+        - traefik.http.routers.shedbuilt-preview.tls=true
+        - traefik.http.routers.shedbuilt-preview.middlewares=${SHEDBUILT_AUTH_MIDDLEWARE:?Set existing Authentik forward-auth middleware}
+        - traefik.http.routers.shedbuilt-preview.service=shedbuilt-preview
+        - traefik.http.services.shedbuilt-preview.loadbalancer.server.port=8080
+networks:
+  traefik:
+    external: true
+    name: ${TRAEFIK_NETWORK:?Set existing Traefik overlay network}

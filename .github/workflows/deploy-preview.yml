@@ -1,0 +1,30 @@
+name: Deploy approved private preview
+on:
+  workflow_dispatch:
+    inputs:
+      preview_digest_image:
+        description: 'Tested GHCR preview image at immutable @sha256 digest'
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: shedbuilt-preview-production
+  cancel-in-progress: false
+jobs:
+  promote:
+    runs-on: [self-hosted, linux, shedbuilt-deployer]
+    environment: production
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Preflight and deploy Authentik-gated lab
+        env:
+          SHEDBUILT_DOMAIN: shedbuilt.virtualhowto.com
+          SHEDBUILT_PREVIEW_IMAGE: ${{ inputs.preview_digest_image }}
+          TRAEFIK_NETWORK: ${{ vars.TRAEFIK_NETWORK }}
+          SHEDBUILT_AUTH_MIDDLEWARE: ${{ vars.SHEDBUILT_AUTH_MIDDLEWARE }}
+        run: bash infra/deploy-preview.sh
+      - name: Report required private-access verification
+        run: |
+          echo 'Check unauthenticated request redirects to Authentik; valid friend login grants access; /version.json matches deployed SHA.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Do not promote the game-server stack: multiplayer admission is not production ready.' >> "$GITHUB_STEP_SUMMARY"

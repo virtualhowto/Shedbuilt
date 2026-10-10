@@ -1,0 +1,17 @@
+{
+  "id": "big_hill",
+  "version": 1,
+  "name": "The Big Hill",
+  "platform": "browser",
+  "build_seconds_default": 600,
+  "build_seconds_min": 300,
+  "build_seconds_max": 1800,
+  "scavenge_seconds": 90,
+  "test_seconds": 60,
+  "max_players": 4,
+  "teams_allowed": true,
+  "private_invite_only": true,
+  "power_allowed": false,
+  "finish_rule": "fastest_valid_finish",
+  "weight_budget_kg": 180
+}

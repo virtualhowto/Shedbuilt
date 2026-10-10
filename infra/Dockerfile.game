@@ -1,0 +1,11 @@
+# Build from repo root after exporting the Linux Server in build/server/.
+FROM ubuntu:24.04
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libfontconfig1 libx11-6 libxrandr2 libxcursor1 libxinerama1 libxi6 libasound2t64 \
+ && rm -rf /var/lib/apt/lists/*
+RUN useradd --system --uid 10001 --home-dir /tmp shedbuilt
+COPY build/server/shedbuilt.x86_64 /opt/shedbuilt/shedbuilt.x86_64
+RUN chmod 0555 /opt/shedbuilt/shedbuilt.x86_64
+USER 10001:10001
+ENV HOME=/tmp XDG_DATA_HOME=/tmp
+EXPOSE 9080
+ENTRYPOINT ["/opt/shedbuilt/shedbuilt.x86_64", "--headless", "--", "--server", "--port=9080"]

@@ -1,0 +1,32 @@
+# Disabled reference ONLY. Do not place in .github/workflows until invite/auth and authoritative multiplayer checks are complete.
+name: Shedbuilt manual Swarm promotion
+on:
+  workflow_dispatch:
+    inputs:
+      web_digest_image:
+        description: 'Tested web image with @sha256 digest'
+        required: true
+      game_digest_image:
+        description: 'Tested headless game image with @sha256 digest'
+        required: true
+permissions:
+  contents: read
+concurrency: shedbuilt-production
+jobs:
+  production:
+    environment: production
+    runs-on: [self-hosted, linux, shedbuilt-deployer]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Preflight and promote approved image digests
+        env:
+          SHEDBUILT_DOMAIN: ${{ vars.SHEDBUILT_DOMAIN }}
+          TRAEFIK_NETWORK: ${{ vars.TRAEFIK_NETWORK }}
+          SHEDBUILT_WEB_IMAGE: ${{ inputs.web_digest_image }}
+          SHEDBUILT_GAME_IMAGE: ${{ inputs.game_digest_image }}
+        run: bash infra/deploy.sh
+      - name: Verify public HTTPS health endpoint
+        env:
+          SHEDBUILT_DOMAIN: ${{ vars.SHEDBUILT_DOMAIN }}
+        run: curl --fail --silent --show-error --retry 10 --retry-delay 3 "https://${SHEDBUILT_DOMAIN}/healthz" | grep -qx ok

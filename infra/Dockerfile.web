@@ -1,0 +1,7 @@
+# Build from repo root after exporting Godot into build/web/.
+FROM nginxinc/nginx-unprivileged:1.27.5-alpine
+COPY infra/nginx.conf /etc/nginx/conf.d/default.conf
+COPY build/web/ /usr/share/nginx/html/
+USER 101
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://127.0.0.1:8080/ >/dev/null || exit 1
