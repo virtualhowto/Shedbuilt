@@ -40,10 +40,11 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      # SHA-256 from official godotengine/godot GitHub 4.6-stable release asset digests.
       - name: Install pinned Godot 4.6 and verified templates
         env:
-          GODOT_LINUX_SHA256: ${{ vars.GODOT_LINUX_SHA256 }}
-          GODOT_TEMPLATES_SHA256: ${{ vars.GODOT_TEMPLATES_SHA256 }}
+          GODOT_LINUX_SHA256: 6bcc59dfd1d670e918c77eae06e82b9dc5699de13d353dc3a4b3b6b307b6dc06
+          GODOT_TEMPLATES_SHA256: 3b30ac8c1772f25f5dfa5f65922cab0a90e7b960176891237c5772515ebccc46
         run: |
           set -euo pipefail
           : "${GODOT_LINUX_SHA256:?Repo variable GODOT_LINUX_SHA256 must be configured}"
